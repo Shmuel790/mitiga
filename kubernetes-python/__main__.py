@@ -8,11 +8,11 @@ from pulumi_kubernetes.core.v1 import PersistentVolumeClaim
 
 app_name = "nginx"
 
-# Read in your index.html file
+# Read in the index.html file
 with open("./index.html", "r", encoding="utf-8") as f:
     file_content = f.read()
     
-#Create ConfigMap
+#Create the ConfigMap
 configmap = ConfigMap(
     "nginx-index",
     data={"index.html": file_content}
@@ -27,7 +27,7 @@ pvc = PersistentVolumeClaim(
         "resources": {"requests": {"storage": "1Gi"}}
     })
 
-# nginx Deployment
+# Deploy the nginx
 dep = Deployment(
     app_name,
     spec={
@@ -68,7 +68,7 @@ dep = Deployment(
     }
 )
 
-# nginx Service
+# This is for the nginz service
 svc = Service(app_name, 
     spec={
         "type": "ClusterIP",
@@ -88,5 +88,5 @@ svc = Service(app_name,
     }
 )
 
-# Export the KubeConfig output
+# Export the KubeConfig
 pulumi.export("kubeconfig", dep)
